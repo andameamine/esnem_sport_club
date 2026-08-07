@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr" class="theme-orange">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Le Bureau — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=1">
+<style>
+  .team-hero{position:relative;overflow:hidden;padding:3.4rem 0 2.6rem}
+  .team-hero::before{content:"";position:absolute;top:-50%;left:-10%;width:60vw;height:220%;background:linear-gradient(135deg,var(--flame),var(--flame-deep));transform:skewX(12deg);opacity:.14;z-index:0}
+  .team-hero .wrap{position:relative;z-index:2}
+  .cellules-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.4rem}
+  .cellule{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:1.6rem;transition:transform .3s var(--ease),box-shadow .3s var(--ease),border-color .3s;position:relative;overflow:hidden}
+  .cellule::before{content:"";position:absolute;left:0;top:0;width:5px;height:100%;background:var(--flame);transform:scaleY(0);transform-origin:top;transition:transform .35s var(--ease)}
+  .cellule:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:transparent}
+  .cellule:hover::before{transform:scaleY(1)}
+  .cellule h3{font-size:1.25rem;margin-bottom:.7rem;letter-spacing:.4px}
+  .cellule p.desc{color:var(--steel);font-size:.92rem;margin-bottom:1.1rem}
+  .cellule ul{list-style:none;display:grid;gap:.5rem}
+  .cellule li{font-size:.85rem;color:var(--muted);display:flex;gap:.55rem;align-items:flex-start;font-weight:500}
+  .cellule li::before{content:"→";color:var(--flame);font-weight:800;flex:none}
+</style>
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="team-hero">
+    <div class="wrap">
+      <span class="eyebrow">Qui sommes-nous</span>
+      <h1 style="font-size:clamp(2.6rem,7vw,4.6rem);margin:.6rem 0 .7rem">Le Bureau</h1>
+      <p style="max-width:56ch;color:var(--muted);font-size:1.08rem">Les responsables qui font vivre ENSEM Sport au quotidien. Faites glisser pour découvrir toute l'équipe.</p>
+    </div>
+    <img class="logo-wm" src="logo-invert.png" alt="" style="position:absolute;z-index:1;right:6%;top:50%;transform:translateY(-50%);width:min(22vw,220px);opacity:.5">
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="scroll-hint">
+        
+      </div>
+      <div class="story-row reveal in" id="teamRow"></div>
+    </div>
+  </section>
+
+  <section class="reveal in" style="padding-top:0">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="eyebrow">Organisation</span>
+        <h2>Les cellules du Bureau</h2>
+        <p>Chaque cellule pilote un pan précis de la vie du club, de la logistique aux soirées.</p>
+      </div>
+      <div class="cellules-grid">
+        <div class="cellule">
+          <h3>Cellule Logistique</h3>
+          <p class="desc">La cellule Logistique est le moteur opérationnel d'ENSEM Sport. Elle assure la préparation, la coordination et le bon déroulement de tous les événements.</p>
+          <ul><li>Gérer le matériel.</li><li>Préparer les espaces.</li><li>Coordonner les équipes.</li><li>Assurer le montage et le démontage.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Événement</h3>
+          <p class="desc">La cellule Événement est responsable de la conception, de l'organisation et du suivi des activités du club.</p>
+          <ul><li>Planifier les événements.</li><li>Élaborer les programmes.</li><li>Coordonner les cellules.</li><li>Superviser l'exécution.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Sponsoring</h3>
+          <p class="desc">La cellule Sponsoring développe les partenariats et mobilise les ressources nécessaires au financement des projets d'ENSEM Sport.</p>
+          <ul><li>Rechercher des partenaires.</li><li>Préparer les dossiers.</li><li>Négocier les partenariats.</li><li>Assurer le suivi des sponsors.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Média</h3>
+          <p class="desc">La cellule Média valorise les activités du club à travers la production de contenus photo, vidéo et multimédia.</p>
+          <ul><li>Couvrir les événements.</li><li>Réaliser photos et vidéos.</li><li>Monter les contenus.</li><li>Produire ES Podcast.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Communication</h3>
+          <p class="desc">La cellule Communication assure la promotion des activités et renforce la visibilité d'ENSEM Sport.</p>
+          <ul><li>Gérer les réseaux sociaux.</li><li>Diffuser les informations.</li><li>Promouvoir les événements.</li><li>Développer l'image du club.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Design</h3>
+          <p class="desc">La cellule Design garantit une identité visuelle moderne, cohérente et professionnelle pour l'ensemble des projets du club.</p>
+          <ul><li>Créer les affiches.</li><li>Concevoir les supports visuels.</li><li>Développer le branding.</li><li>Assurer la cohérence graphique.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Jeux &amp; Sports</h3>
+          <p class="desc">La cellule Jeux &amp; Sports développe les activités sportives et favorise l'esprit de compétition et de fair-play.</p>
+          <ul><li>Organiser les tournois.</li><li>Gérer les compétitions.</li><li>Animer les activités sportives.</li><li>Promouvoir les valeurs du sport.</li></ul>
+        </div>
+        <div class="cellule">
+          <h3>Cellule Soirées &amp; Shows</h3>
+          <p class="desc">La cellule Soirées &amp; Shows conçoit les animations artistiques et festives qui rythment la vie étudiante.</p>
+          <ul><li>Organiser les soirées.</li><li>Programmer les spectacles.</li><li>Coordonner les animations.</li><li>Gérer l'ambiance et les performances.</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=6"></script>
+<script src="experience.js?v=1"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async ()=>{
+    await loadTeamInto('teamRow');
+    observeReveal();
+  });
+</script>
+</body>
+</html>

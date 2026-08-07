@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Actualités — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=1">
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="pagehead">
+    <div class="wrap">
+      <span class="eyebrow">Actualités</span>
+      <h1>Les nouvelles<br>du collectif</h1>
+      <p>Les nouvelles des équipes, événements et projets ENSEM Sport.</p>
+    </div>
+    <img class="logo-wm" src="logo-invert.png" alt="">
+  </section>
+  <section>
+    <div class="wrap">
+      <div class="news-list" id="newsList"></div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=6"></script>
+<script src="experience.js?v=1"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', async ()=>{ await loadNewsInto('newsList'); observeReveal(); });
+</script>
+</body>
+</html>

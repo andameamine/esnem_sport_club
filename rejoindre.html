@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Nous rejoindre — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=1">
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="pagehead">
+    <div class="wrap">
+      <span class="eyebrow">Nous rejoindre</span>
+      <h1>Trouvez votre place</h1>
+      <p>Choisissez vos disciplines et rejoignez le collectif. Votre inscription est transmise au comité ENSEM Sport.</p>
+    </div>
+    <img class="logo-wm" src="logo-invert.png" alt="">
+  </section>
+  <section>
+    <div class="wrap join-grid">
+      <div class="reveal in">
+        <label style="font-size:.95rem;margin-bottom:0">Sports qui vous intéressent</label>
+        <div class="chips" id="chips"></div>
+        <label style="font-size:.95rem;margin:1.6rem 0 0;display:block">Cellules qui vous intéressent</label>
+        <div class="chips" id="cellChips"></div>
+        <p style="color:var(--muted);font-size:.9rem;margin-top:1.5rem">Sélectionnez une ou plusieurs disciplines et/ou cellules, puis remplissez le formulaire. Votre demande d'adhésion sera enregistrée par le comité.</p>
+      </div>
+      <form class="reveal in" id="joinForm" novalidate>
+        <div class="field"><label for="jn">Nom complet</label><input type="text" id="jn" required autocomplete="name"><div class="err">Ce champ est obligatoire.</div></div>
+        <div class="field"><label for="je">Adresse e-mail</label><input type="email" id="je" required autocomplete="email"><div class="err">Saisissez une adresse e-mail valide.</div></div>
+        <div class="field"><label for="jp">Téléphone</label><input type="tel" id="jp" autocomplete="tel"></div>
+        <input type="hidden" id="jsports">
+        <input type="hidden" id="jcellules">
+        <div class="field consent">
+          <input type="checkbox" id="jc" required>
+          <label for="jc" style="margin:0;font-weight:400">J'accepte que mes données soient traitées pour ma demande d'adhésion.</label>
+        </div>
+        <button type="submit" class="btn primary full" id="joinBtn">Envoyer la demande</button>
+        <div class="form-msg" id="joinMsg"></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=6"></script>
+<script src="experience.js?v=1"></script>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    observeReveal();
+    const selected = buildSportChips('chips','jsports');
+    const selectedCell = buildChips(CELLULES,'cellChips','jcellules');
+    document.getElementById('joinForm').addEventListener('submit', async e=>{
+      e.preventDefault();
+      const nom=document.getElementById('jn'),email=document.getElementById('je'),tel=document.getElementById('jp'),cons=document.getElementById('jc'),msg=document.getElementById('joinMsg'),btn=document.getElementById('joinBtn');
+      let ok=markField(nom,nom.value.trim()!=='');ok=markField(email,isEmail(email.value.trim()))&&ok;ok=markField(cons,cons.checked)&&ok;
+      if(!ok)return;
+      const payload={type:'membre',nom:nom.value.trim(),email:email.value.trim(),telephone:tel.value.trim(),sports:document.getElementById('jsports').value,cellules:document.getElementById('jcellules').value};
+      btn.disabled=true;btn.textContent='Envoi…';
+      try{
+        await sendToSheet(payload);
+        msg.className='form-msg ok show';
+        msg.textContent='Votre demande a bien été enregistrée et transmise à ENSEM Sport. Vous pouvez aussi écrire à sport@ensem.ac.ma.';
+        showToast('<b>✓</b> Bienvenue dans le collectif !');
+        e.target.reset(); selected.clear(); selectedCell.clear();
+        document.querySelectorAll('#chips .chip, #cellChips .chip').forEach(c=>c.classList.remove('on'));
+      }catch(err){
+        msg.className='form-msg show'; msg.textContent="L'envoi a échoué. Réessayez ou écrivez à sport@ensem.ac.ma.";
+      }finally{btn.disabled=false;btn.textContent='Envoyer la demande';}
+    });
+  });
+</script>
+</body>
+</html>

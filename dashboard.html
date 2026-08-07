@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Espace comité — ENSEM Sport</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#141414;--flame:#D6202A;--flame-deep:#9E1620;--steel:#3A3D42;--paper:#EEF0F3;--card:#FFFFFF;--line:#DDE1E6;--muted:#5B616B;--shadow:0 18px 50px -20px rgba(20,20,20,.28);--ease:cubic-bezier(.22,.61,.36,1)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--paper);color:var(--ink);line-height:1.55}
+  a{color:inherit}
+  h1,h2,h3,.display{font-family:'Anton',sans-serif;font-weight:400;text-transform:uppercase;letter-spacing:.5px;line-height:1}
+  :focus-visible{outline:3px solid var(--flame);outline-offset:2px}
+  .brand{display:flex;align-items:center;gap:.6rem;font-family:'Anton';font-size:1.3rem;letter-spacing:1px}
+  .brand .mark{width:32px;height:32px}.brand b{color:var(--flame)}
+  input,textarea,select{width:100%;padding:.75rem .9rem;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:.92rem;background:var(--paper);transition:border .2s,background .2s}
+  input:focus,textarea:focus,select:focus{border-color:var(--flame);background:#fff;outline:none}
+  label{display:block;font-weight:600;font-size:.8rem;margin-bottom:.35rem}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font-weight:700;font-size:.9rem;padding:.75rem 1.3rem;border-radius:999px;cursor:pointer;border:2px solid var(--ink);background:var(--ink);color:#fff;transition:transform .2s,background .2s,color .2s,border-color .2s}
+  .btn:hover{background:var(--flame);border-color:var(--flame);transform:translateY(-1px)}
+  .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn.sm{padding:.5rem .9rem;font-size:.82rem;border-width:1.5px}
+  .btn.danger{background:transparent;color:var(--flame);border-color:var(--flame)}
+  .btn.danger:hover{background:var(--flame);color:#fff}
+  .field{margin-bottom:1rem}
+
+  /* LOGIN */
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:1.5rem}
+  .login-card{background:var(--card);border-radius:20px;max-width:420px;width:100%;overflow:hidden;box-shadow:var(--shadow)}
+  .login-card .top{background:var(--ink);color:#fff;padding:2rem;position:relative;overflow:hidden}
+  .login-card .top::before{content:"";position:absolute;right:-30%;top:-60%;width:60%;height:220%;background:var(--flame);transform:skewX(-16deg);opacity:.85}
+  .eyebrow{font-weight:800;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--flame);position:relative}
+  .login-card .top .eyebrow{color:#fff}
+  .login-card .top h1{font-size:2rem;margin-top:.5rem;position:relative}
+  .login-card .body{padding:1.8rem}
+  .login-card .sub{color:var(--muted);font-size:.88rem;margin-bottom:1.4rem}
+  .msg{display:none;margin-top:1rem;padding:.8rem 1rem;border-radius:10px;font-size:.86rem;font-weight:600;background:rgba(214,32,42,.1);color:var(--flame-deep);border:1px solid rgba(214,32,42,.25)}
+  .msg.show{display:block}.msg.ok{background:rgba(34,139,58,.1);color:#1c7a33;border-color:rgba(34,139,58,.3)}
+  .full{width:100%}
+  .config-warn{background:#fff4e5;border:1px solid #f0c987;color:#8a5a00;padding:1rem;border-radius:12px;font-size:.85rem;margin-bottom:1.2rem}
+
+  /* APP */
+  .app{display:none;min-height:100vh}
+  .app.show{display:block}
+  .topbar{background:var(--card);border-bottom:1px solid var(--line);padding:.9rem clamp(1rem,4vw,2rem);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+  .topbar .who{font-size:.82rem;color:var(--muted);margin-right:1rem}
+  .shell{max-width:1000px;margin:0 auto;padding:1.8rem clamp(1rem,4vw,2rem)}
+  .tabs{display:flex;gap:.4rem;margin-bottom:1.8rem;flex-wrap:wrap}
+  .tab{padding:.6rem 1.1rem;border-radius:999px;font-weight:700;font-size:.88rem;cursor:pointer;border:1.5px solid var(--line);background:var(--card);color:var(--steel);transition:.2s}
+  .tab.on{background:var(--flame);border-color:var(--flame);color:#fff}
+  .panel{display:none}.panel.on{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:1.5rem;margin-bottom:1.4rem}
+  .card h2{font-size:1.3rem;margin-bottom:1rem}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .list{display:grid;gap:.6rem}
+  .item{display:flex;align-items:center;gap:1rem;padding:.9rem 1rem;border:1px solid var(--line);border-radius:12px;background:var(--card);transition:.2s}
+  .item:hover{border-color:var(--flame)}
+  .item .grow{flex:1;min-width:0}
+  .item .grow b{display:block;font-size:1rem}
+  .item .grow small{color:var(--muted);font-size:.8rem}
+  .badge{font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--flame);background:rgba(214,32,42,.1);padding:.25rem .6rem;border-radius:999px;white-space:nowrap}
+  .badge.date{color:var(--steel);background:rgba(58,61,66,.1)}
+  .thumb{width:56px;height:56px;border-radius:10px;object-fit:cover;flex:none;background:var(--paper)}
+  .empty{color:var(--muted);font-size:.9rem;padding:1rem;text-align:center;border:1px dashed var(--line);border-radius:12px}
+  .gal-add .drop{border:2px dashed var(--line);border-radius:12px;padding:1.3rem;text-align:center;color:var(--muted);font-size:.88rem;cursor:pointer;transition:.2s}
+  .gal-add .drop:hover{border-color:var(--flame);color:var(--flame)}
+  .actions{display:flex;gap:.5rem}
+  @media(max-width:640px){.row{grid-template-columns:1fr}.item{flex-wrap:wrap}}
+  @media(max-width:480px){
+    .topbar{flex-wrap:wrap;gap:.6rem}
+    .topbar .who{margin-right:0;font-size:.74rem;order:3;width:100%}
+    .tabs{gap:.35rem}.tab{padding:.5rem .85rem;font-size:.8rem}
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN ================= -->
+<div class="login-wrap" id="loginView">
+  <div class="login-card">
+    <div class="top">
+      <span class="eyebrow">Espace comité</span>
+      <h1>Log in</h1>
+    </div>
+    <div class="body">
+      <div class="config-warn" id="configWarn" style="display:none">
+        ⚠️ Le backend n'est pas encore configuré. Ouvrez ce fichier et renseignez <b>SUPABASE_URL</b> et <b>SUPABASE_ANON_KEY</b> (voir le guide).
+      </div>
+      <p class="sub">Portail sécurisé des responsables ENSEM Sport. Accès réservé aux responsables autorisés du club.</p>
+      <form id="loginForm" novalidate>
+        <div class="field"><label for="li">Adresse e-mail</label><input type="email" id="li" autocomplete="email" required></div>
+        <div class="field"><label for="lp">Mot de passe</label><input type="password" id="lp" autocomplete="current-password" required></div>
+        <button type="submit" class="btn full" id="loginBtn">Se connecter</button>
+        <div class="msg" id="loginMsg"></div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ================= APP ================= -->
+<div class="app" id="appView">
+  <div class="topbar">
+    <div class="brand">
+      <img class="mark" src="logo.png" alt="ENSEM Sport">
+      ENSEM<b>SPORT</b>
+    </div>
+    <div style="display:flex;align-items:center">
+      <span class="who" id="who"></span>
+      <button class="btn ghost sm" id="logoutBtn">Se déconnecter</button>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="tabs">
+      <div class="tab on" data-tab="events">Événements</div>
+      <div class="tab" data-tab="news">Actualités</div>
+      <div class="tab" data-tab="gallery">Galerie</div>
+      <div class="tab" data-tab="team">Bureau</div>
+      <div class="tab" data-tab="partners">Partenaires</div>
+    </div>
+
+    <!-- EVENTS -->
+    <div class="panel on" id="panel-events">
+      <div class="card">
+        <h2>Ajouter un événement</h2>
+        <div class="row">
+          <div class="field"><label for="evName">Nom de l'événement</label><input id="evName" placeholder="Olympiades ENSEM"></div>
+          <div class="field"><label for="evCat">Catégorie</label>
+            <select id="evCat"><option>Sport</option><option>Compétition</option><option>Média</option><option>Gaming</option><option>Vie de club</option><option>Projet</option><option>Soirée</option></select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="evDate">Date (laisser vide = « À annoncer »)</label><input type="date" id="evDate"></div>
+          <div class="field"><label for="evOrder">Ordre d'affichage</label><input type="number" id="evOrder" value="0"></div>
+        </div>
+        <div class="field"><label for="evDesc">Description (affichée dans la fiche détaillée)</label><textarea id="evDesc" rows="3" placeholder="Présentez l'événement en quelques phrases…"></textarea></div>
+        <div class="field">
+          <label>Logo de l'événement</label>
+          <label class="drop" for="evFile" id="evDrop">Cliquez pour choisir un logo (JPG / PNG)</label>
+          <input type="file" id="evFile" accept="image/*" style="display:none">
+        </div>
+        <button class="btn" id="evAdd">Ajouter l'événement</button>
+        <div class="msg" id="evMsg"></div>
+      </div>
+      <div class="list" id="evList"></div>
+    </div>
+
+
+    <!-- NEWS -->
+    <div class="panel" id="panel-news">
+      <div class="card">
+        <h2>Ajouter une actualité</h2>
+        <div class="field"><label for="nwTitle">Titre de l'actualité</label><input id="nwTitle" placeholder="Appel aux partenariats"></div>
+        <div class="field"><label for="nwOrder">Ordre d'affichage</label><input type="number" id="nwOrder" value="0"></div>
+        <button class="btn" id="nwAdd">Ajouter l'actualité</button>
+        <div class="msg" id="nwMsg"></div>
+      </div>
+      <div class="list" id="nwList"></div>
+    </div>
+
+    <!-- GALLERY -->
+    <div class="panel" id="panel-gallery">
+      <div class="card gal-add">
+        <h2>Ajouter une photo</h2>
+        <div class="field"><label for="glTitle">Légende (optionnel)</label><input id="glTitle" placeholder="Olympiades 2026"></div>
+        <div class="field">
+          <label>Photo</label>
+          <label class="drop" for="glFile" id="glDrop">Cliquez pour choisir une image (JPG / PNG)</label>
+          <input type="file" id="glFile" accept="image/*" style="display:none">
+        </div>
+        <button class="btn" id="glAdd" disabled>Téléverser la photo</button>
+        <div class="msg" id="glMsg"></div>
+      </div>
+      <div class="list" id="glList"></div>
+    </div>
+
+    <!-- TEAM -->
+    <div class="panel" id="panel-team">
+      <div class="card gal-add">
+        <h2>Ajouter un membre du bureau</h2>
+        <div class="row">
+          <div class="field"><label for="tmName">Nom complet</label><input id="tmName" placeholder="Prénom Nom"></div>
+          <div class="field"><label for="tmRole">Poste / Rôle</label><input id="tmRole" placeholder="Président·e"></div>
+        </div>
+        <div class="field"><label for="tmEmail">E-mail (optionnel — affiché au survol de la photo)</label><input type="email" id="tmEmail" placeholder="prenom.nom@ensem.ac.ma"></div>
+        <div class="field">
+          <label>Photo (optionnelle)</label>
+          <label class="drop" for="tmFile" id="tmDrop">Cliquez pour choisir une photo (JPG / PNG)</label>
+          <input type="file" id="tmFile" accept="image/*" style="display:none">
+        </div>
+        <div class="field"><label for="tmOrder">Ordre d'affichage</label><input type="number" id="tmOrder" value="0"></div>
+        <button class="btn" id="tmAdd">Ajouter le membre</button>
+        <div class="msg" id="tmMsg"></div>
+      </div>
+      <div class="list" id="tmList"></div>
+    </div>
+
+    <!-- PARTNERS -->
+    <div class="panel" id="panel-partners">
+      <div class="card gal-add">
+        <h2>Ajouter un partenaire</h2>
+        <div class="row">
+          <div class="field"><label for="ptName">Nom du partenaire</label><input id="ptName" placeholder="Nom de l'organisation"></div>
+          <div class="field"><label for="ptSite">Site web (optionnel)</label><input id="ptSite" placeholder="https://..."></div>
+        </div>
+        <div class="field">
+          <label>Logo</label>
+          <label class="drop" for="ptFile" id="ptDrop">Cliquez pour choisir un logo (JPG / PNG)</label>
+          <input type="file" id="ptFile" accept="image/*" style="display:none">
+        </div>
+        <div class="field"><label for="ptOrder">Ordre d'affichage</label><input type="number" id="ptOrder" value="0"></div>
+        <button class="btn" id="ptAdd" disabled>Ajouter le partenaire</button>
+        <div class="msg" id="ptMsg"></div>
+      </div>
+      <div class="list" id="ptList"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  /* ========================================================
+     CONFIGURATION — mêmes valeurs que dans index.html
+     ======================================================== */
+  const CONFIG = {
+    SUPABASE_URL:      'https://gexqqlyzlggrxicwhcnb.supabase.co',
+    SUPABASE_ANON_KEY: 'sb_publishable_zLVBKoecbek6-P1TL7K7nw_V9zSjKmY'
+  };
+  const configured = !CONFIG.SUPABASE_URL.includes('VOTRE-PROJET');
+  const sb = configured ? window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : null;
+
+  const $=id=>document.getElementById(id);
+  const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fmtDate=d=>new Date(d+'T00:00:00').toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  function flash(el,text,ok){el.className='msg show'+(ok?' ok':'');el.textContent=text;setTimeout(()=>el.classList.remove('show'),3500);}
+
+  if(!configured) $('configWarn').style.display='block';
+
+  /* ---------- session ---------- */
+  async function checkSession(){
+    if(!sb)return;
+    const {data:{session}}=await sb.auth.getSession();
+    if(session) enterApp(session.user.email);
+  }
+  function enterApp(email){
+    $('loginView').style.display='none';
+    $('appView').classList.add('show');
+    $('who').textContent=email;
+    loadEvents();loadNews();loadGallery();loadTeam();loadPartners();
+  }
+
+  /* ---------- login ---------- */
+  $('loginForm').addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!sb){flash($('loginMsg'),'Backend non configuré. Voir le guide.',false);return;}
+    const email=$('li').value.trim(),pw=$('lp').value,btn=$('loginBtn');
+    btn.disabled=true;btn.textContent='Connexion…';
+    const {data,error}=await sb.auth.signInWithPassword({email,password:pw});
+    btn.disabled=false;btn.textContent='Se connecter';
+    if(error){flash($('loginMsg'),'E-mail ou mot de passe incorrect.',false);return;}
+    enterApp(data.user.email);
+  });
+  $('logoutBtn').addEventListener('click',async()=>{await sb.auth.signOut();location.reload();});
+
+  /* ---------- tabs ---------- */
+  document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+    t.classList.add('on');$('panel-'+t.dataset.tab).classList.add('on');
+  }));
+
+  /* ================= EVENTS ================= */
+  async function loadEvents(){
+    const {data,error}=await sb.from('events').select('*').order('display_order');
+    const list=$('evList');
+    if(error){list.innerHTML=`<div class="empty">Erreur de chargement.</div>`;return;}
+    if(!data.length){list.innerHTML=`<div class="empty">Aucun événement pour le moment.</div>`;return;}
+    list.innerHTML=data.map(e=>`
+      <div class="item">
+        ${e.logo_url?`<img class="thumb" src="${esc(e.logo_url)}" alt="">`:`<div class="thumb" style="display:grid;place-items:center;color:var(--muted);font-size:.7rem">Sans logo</div>`}
+        <div class="grow"><b>${esc(e.name)}</b><small>${esc(e.category)} · ordre ${e.display_order}${e.description?' · description ✓':''}</small></div>
+        ${e.event_date?`<span class="badge date">${fmtDate(e.event_date)}</span>`:`<span class="badge">À annoncer</span>`}
+        <div class="actions">
+          <label class="btn ghost sm" style="cursor:pointer">Logo<input type="file" accept="image/*" style="display:none" data-logo-ev="${e.id}"></label>
+          <button class="btn ghost sm" data-edit-desc="${e.id}" data-cur="${esc(e.description||'')}">Description</button>
+          <button class="btn ghost sm" data-edit-ev="${e.id}">Date</button>
+          <button class="btn danger sm" data-del-ev="${e.id}">Suppr.</button>
+        </div>
+      </div>`).join('');
+    list.querySelectorAll('[data-del-ev]').forEach(b=>b.addEventListener('click',()=>delEvent(b.dataset.delEv)));
+    list.querySelectorAll('[data-edit-ev]').forEach(b=>b.addEventListener('click',()=>editDate(b.dataset.editEv)));
+    list.querySelectorAll('[data-edit-desc]').forEach(b=>b.addEventListener('click',()=>editDesc(b.dataset.editDesc,b.dataset.cur)));
+    list.querySelectorAll('[data-logo-ev]').forEach(inp=>inp.addEventListener('change',e=>uploadEventLogo(inp.dataset.logoEv,e.target.files[0])));
+  }
+  let newEvFile=null;
+  $('evFile').addEventListener('change',e=>{
+    newEvFile=e.target.files[0]||null;
+    $('evDrop').textContent=newEvFile?('📷 '+newEvFile.name):'Cliquez pour choisir un logo (JPG / PNG)';
+  });
+  $('evAdd').addEventListener('click',async()=>{
+    const name=$('evName').value.trim();if(!name){flash($('evMsg'),'Le nom est obligatoire.',false);return;}
+    let logo_url=null;
+    if(newEvFile){
+      try{
+        const ext=newEvFile.name.split('.').pop().toLowerCase();
+        const path='events/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+        const up=await sb.storage.from('gallery').upload(path,newEvFile,{cacheControl:'3600',upsert:false});
+        if(up.error)throw up.error;
+        logo_url=sb.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+      }catch(err){flash($('evMsg'),'Erreur logo : '+(err.message||err),false);return;}
+    }
+    const payload={name,category:$('evCat').value,display_order:+$('evOrder').value||0,event_date:$('evDate').value||null,description:$('evDesc').value.trim()||null,logo_url};
+    const {error}=await sb.from('events').insert(payload);
+    if(error){flash($('evMsg'),'Erreur : '+error.message,false);return;}
+    flash($('evMsg'),'Événement ajouté ✓',true);
+    $('evName').value='';$('evDate').value='';$('evDesc').value='';$('evFile').value='';newEvFile=null;$('evDrop').textContent='Cliquez pour choisir un logo (JPG / PNG)';
+    loadEvents();
+  });
+  async function uploadEventLogo(id,file){
+    if(!file)return;
+    try{
+      const ext=file.name.split('.').pop().toLowerCase();
+      const path='events/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+      const up=await sb.storage.from('gallery').upload(path,file,{cacheControl:'3600',upsert:false});
+      if(up.error)throw up.error;
+      const url=sb.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+      const {error}=await sb.from('events').update({logo_url:url}).eq('id',id);
+      if(error)throw error;
+      loadEvents();
+    }catch(err){alert('Erreur logo : '+(err.message||err));}
+  }
+  async function editDesc(id,cur){
+    const v=prompt('Description de l\'événement :',cur||'');
+    if(v===null)return;
+    const {error}=await sb.from('events').update({description:v.trim()||null}).eq('id',id);
+    if(error){alert('Erreur : '+error.message);return;}loadEvents();
+  }
+  async function editDate(id){
+    const v=prompt('Nouvelle date (AAAA-MM-JJ). Laisser vide pour « À annoncer » :','');
+    if(v===null)return;
+    const {error}=await sb.from('events').update({event_date:v.trim()||null}).eq('id',id);
+    if(error){alert('Erreur : '+error.message);return;}loadEvents();
+  }
+  async function delEvent(id){
+    if(!confirm('Supprimer cet événement ?'))return;
+    const {error}=await sb.from('events').delete().eq('id',id);
+    if(error){alert('Erreur : '+error.message);return;}loadEvents();
+  }
+
+  /* ================= NEWS ================= */
+  async function loadNews(){
+    const {data,error}=await sb.from('news').select('*').order('display_order');
+    const list=$('nwList');
+    if(error){list.innerHTML=`<div class="empty">Erreur de chargement.</div>`;return;}
+    if(!data.length){list.innerHTML=`<div class="empty">Aucune actualité pour le moment.</div>`;return;}
+    list.innerHTML=data.map(n=>`
+      <div class="item">
+        <div class="grow"><b>${esc(n.title)}</b><small>ordre ${n.display_order}</small></div>
+        <div class="actions"><button class="btn danger sm" data-del-nw="${n.id}">Suppr.</button></div>
+      </div>`).join('');
+    list.querySelectorAll('[data-del-nw]').forEach(b=>b.addEventListener('click',async()=>{
+      if(!confirm('Supprimer cette actualité ?'))return;
+      await sb.from('news').delete().eq('id',b.dataset.delNw);loadNews();
+    }));
+  }
+  $('nwAdd').addEventListener('click',async()=>{
+    const title=$('nwTitle').value.trim();if(!title){flash($('nwMsg'),'Le titre est obligatoire.',false);return;}
+    const {error}=await sb.from('news').insert({title,display_order:+$('nwOrder').value||0});
+    if(error){flash($('nwMsg'),'Erreur : '+error.message,false);return;}
+    flash($('nwMsg'),'Actualité ajoutée ✓',true);$('nwTitle').value='';loadNews();
+  });
+
+  /* ================= GALLERY ================= */
+  let pickedFile=null;
+  $('glFile').addEventListener('change',e=>{
+    pickedFile=e.target.files[0]||null;
+    $('glDrop').textContent=pickedFile?('📷 '+pickedFile.name):'Cliquez pour choisir une image (JPG / PNG)';
+    $('glAdd').disabled=!pickedFile;
+  });
+  $('glAdd').addEventListener('click',async()=>{
+    if(!pickedFile)return;
+    const btn=$('glAdd');btn.disabled=true;btn.textContent='Téléversement…';
+    try{
+      const ext=pickedFile.name.split('.').pop().toLowerCase();
+      const path=Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+      const up=await sb.storage.from('gallery').upload(path,pickedFile,{cacheControl:'3600',upsert:false});
+      if(up.error)throw up.error;
+      const {data:{publicUrl}}=sb.storage.from('gallery').getPublicUrl(path);
+      const {error}=await sb.from('gallery').insert({title:$('glTitle').value.trim(),image_url:publicUrl,display_order:0});
+      if(error)throw error;
+      flash($('glMsg'),'Photo ajoutée ✓',true);
+      $('glTitle').value='';$('glFile').value='';pickedFile=null;$('glDrop').textContent='Cliquez pour choisir une image (JPG / PNG)';
+      loadGallery();
+    }catch(err){flash($('glMsg'),'Erreur : '+(err.message||err),false);}
+    finally{btn.disabled=false;btn.textContent='Téléverser la photo';}
+  });
+  async function loadGallery(){
+    const {data,error}=await sb.from('gallery').select('*').order('display_order');
+    const list=$('glList');
+    if(error){list.innerHTML=`<div class="empty">Erreur de chargement.</div>`;return;}
+    if(!data.length){list.innerHTML=`<div class="empty">Aucune photo pour le moment.</div>`;return;}
+    list.innerHTML=data.map(g=>`
+      <div class="item">
+        <img class="thumb" src="${esc(g.image_url)}" alt="">
+        <div class="grow"><b>${esc(g.title||'Sans légende')}</b><small>${esc(g.image_url).slice(0,48)}…</small></div>
+        <div class="actions"><button class="btn danger sm" data-del-gl="${g.id}">Suppr.</button></div>
+      </div>`).join('');
+    list.querySelectorAll('[data-del-gl]').forEach(b=>b.addEventListener('click',async()=>{
+      if(!confirm('Supprimer cette photo ?'))return;
+      await sb.from('gallery').delete().eq('id',b.dataset.delGl);loadGallery();
+    }));
+  }
+
+  /* ================= TEAM / BUREAU ================= */
+  let teamFile=null;
+  $('tmFile').addEventListener('change',e=>{
+    teamFile=e.target.files[0]||null;
+    $('tmDrop').textContent=teamFile?('📷 '+teamFile.name):'Cliquez pour choisir une photo (JPG / PNG)';
+  });
+  $('tmAdd').addEventListener('click',async()=>{
+    const name=$('tmName').value.trim();
+    if(!name){flash($('tmMsg'),'Le nom est obligatoire.',false);return;}
+    const btn=$('tmAdd');btn.disabled=true;btn.textContent='Enregistrement…';
+    try{
+      let url=null;
+      if(teamFile){
+        const ext=teamFile.name.split('.').pop().toLowerCase();
+        const path='team/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+        const up=await sb.storage.from('gallery').upload(path,teamFile,{cacheControl:'3600',upsert:false});
+        if(up.error)throw up.error;
+        url=sb.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+      }
+      const {error}=await sb.from('team').insert({name,role:$('tmRole').value.trim(),email:$('tmEmail').value.trim()||null,photo_url:url,display_order:+$('tmOrder').value||0});
+      if(error)throw error;
+      flash($('tmMsg'),'Membre ajouté ✓',true);
+      $('tmName').value='';$('tmRole').value='';$('tmEmail').value='';$('tmFile').value='';teamFile=null;$('tmDrop').textContent='Cliquez pour choisir une photo (JPG / PNG)';
+      loadTeam();
+    }catch(err){flash($('tmMsg'),'Erreur : '+(err.message||err),false);}
+    finally{btn.disabled=false;btn.textContent='Ajouter le membre';}
+  });
+  async function loadTeam(){
+    const {data,error}=await sb.from('team').select('*').order('display_order');
+    const list=$('tmList');
+    if(error){list.innerHTML=`<div class="empty">Erreur de chargement.</div>`;return;}
+    if(!data.length){list.innerHTML=`<div class="empty">Aucun membre pour le moment.</div>`;return;}
+    list.innerHTML=data.map(m=>`
+      <div class="item">
+        ${m.photo_url?`<img class="thumb" src="${esc(m.photo_url)}" alt="">`:`<div class="thumb" style="display:grid;place-items:center;font-weight:800;color:var(--muted)">${esc((m.name||'?').slice(0,1).toUpperCase())}</div>`}
+        <div class="grow"><b>${esc(m.name)}</b><small>${esc(m.role||'—')} · ordre ${m.display_order}${m.email?' · '+esc(m.email):' · sans e-mail'}</small></div>
+        <div class="actions">
+          <button class="btn ghost sm" data-edit-email="${m.id}" data-cur="${esc(m.email||'')}">E-mail</button>
+          <button class="btn danger sm" data-del-tm="${m.id}">Suppr.</button>
+        </div>
+      </div>`).join('');
+    list.querySelectorAll('[data-edit-email]').forEach(b=>b.addEventListener('click',async()=>{
+      const v=prompt('Adresse e-mail de ce membre (laisser vide pour retirer) :',b.dataset.cur||'');
+      if(v===null)return;
+      const {error}=await sb.from('team').update({email:v.trim()||null}).eq('id',b.dataset.editEmail);
+      if(error){alert('Erreur : '+error.message);return;}loadTeam();
+    }));
+    list.querySelectorAll('[data-del-tm]').forEach(b=>b.addEventListener('click',async()=>{
+      if(!confirm('Supprimer ce membre ?'))return;
+      await sb.from('team').delete().eq('id',b.dataset.delTm);loadTeam();
+    }));
+  }
+
+  /* ================= PARTNERS ================= */
+  let ptFile=null;
+  $('ptFile').addEventListener('change',e=>{
+    ptFile=e.target.files[0]||null;
+    $('ptDrop').textContent=ptFile?('📷 '+ptFile.name):'Cliquez pour choisir un logo (JPG / PNG)';
+    $('ptAdd').disabled=!ptFile;
+  });
+  $('ptAdd').addEventListener('click',async()=>{
+    const name=$('ptName').value.trim();if(!name){flash($('ptMsg'),'Le nom est obligatoire.',false);return;}
+    if(!ptFile)return;
+    const btn=$('ptAdd');btn.disabled=true;btn.textContent='Envoi…';
+    try{
+      const ext=ptFile.name.split('.').pop().toLowerCase();
+      const path='partners/'+Date.now()+'-'+Math.random().toString(36).slice(2,8)+'.'+ext;
+      const up=await sb.storage.from('gallery').upload(path,ptFile,{cacheControl:'3600',upsert:false});
+      if(up.error)throw up.error;
+      const url=sb.storage.from('gallery').getPublicUrl(path).data.publicUrl;
+      const {error}=await sb.from('partners').insert({name,logo_url:url,website:$('ptSite').value.trim()||null,display_order:+$('ptOrder').value||0});
+      if(error)throw error;
+      flash($('ptMsg'),'Partenaire ajouté ✓',true);
+      $('ptName').value='';$('ptSite').value='';$('ptFile').value='';ptFile=null;$('ptDrop').textContent='Cliquez pour choisir un logo (JPG / PNG)';
+      loadPartners();
+    }catch(err){flash($('ptMsg'),'Erreur : '+(err.message||err),false);}
+    finally{btn.disabled=false;btn.textContent='Ajouter le partenaire';}
+  });
+  async function loadPartners(){
+    const {data,error}=await sb.from('partners').select('*').order('display_order');
+    const list=$('ptList');
+    if(error){list.innerHTML=`<div class="empty">Erreur de chargement.</div>`;return;}
+    if(!data.length){list.innerHTML=`<div class="empty">Aucun partenaire pour le moment.</div>`;return;}
+    list.innerHTML=data.map(p=>`
+      <div class="item">
+        <img class="thumb" src="${esc(p.logo_url||'')}" alt="">
+        <div class="grow"><b>${esc(p.name)}</b><small>${p.website?esc(p.website):'Sans site web'}</small></div>
+        <div class="actions"><button class="btn danger sm" data-del-pt="${p.id}">Suppr.</button></div>
+      </div>`).join('');
+    list.querySelectorAll('[data-del-pt]').forEach(b=>b.addEventListener('click',async()=>{
+      if(!confirm('Supprimer ce partenaire ?'))return;
+      await sb.from('partners').delete().eq('id',b.dataset.delPt);loadPartners();
+    }));
+  }
+
+  checkSession();
+</script>
+</body>
+</html>

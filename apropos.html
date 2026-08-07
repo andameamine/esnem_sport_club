@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>À propos — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=1">
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="pagehead pagehead--sm">
+    <div class="wrap">
+      <span class="eyebrow">À propos</span>
+      <h1>Sport, leadership<br>&amp; engagement</h1>
+      <p>Sport, leadership, innovation et engagement étudiant.</p>
+    </div>
+    <img class="logo-wm" src="logo-invert.png" alt="">
+  </section>
+
+  <section>
+    <div class="wrap about-grid">
+      <div class="reveal">
+        <p class="body">ENSEM Sport est l'organisation sportive étudiante officielle de l'École Nationale Supérieure d'Électricité et de Mécanique (ENSEM), Université Hassan II de Casablanca.</p>
+        <p class="body">Elle crée des opportunités de développement personnel et professionnel grâce aux compétitions, aux médias, aux projets, aux événements gaming et aux partenariats.</p>
+        <div class="btns" style="margin-top:1.4rem">
+          <a href="bureau.html" class="btn primary">Découvrir le Bureau <span class="arrow">→</span></a>
+          <a href="rejoindre.html" class="btn ghost">Nous rejoindre</a>
+        </div>
+      </div>
+      <div class="stats reveal">
+        <div class="stat"><div class="num" data-count="8">0</div><div class="lbl">Événements officiels</div></div>
+        <div class="stat"><div class="num" data-count="12">0</div><div class="lbl">Disciplines sportives</div></div>
+        <div class="stat"><div class="num" data-count="200" data-suffix="+">0</div><div class="lbl">Étudiants engagés</div></div>
+        <div class="stat"><div class="num" data-count="1">0</div><div class="lbl">Collectif, un objectif</div></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=6"></script>
+<script src="experience.js?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded',()=>{observeReveal();observeCounters();});</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Contact — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=1">
+</head>
+<body>
+<div id="site-header"></div>
+<main>
+  <section class="pagehead pagehead--tight">
+    <div class="wrap">
+      <span class="eyebrow">Contact</span>
+      <h1>Écrivez-nous</h1>
+      <p>Une adresse officielle pour les adhésions, événements, médias et partenariats.</p>
+    </div>
+    <img class="logo-wm" src="logo-invert.png" alt="">
+  </section>
+  <section>
+    <div class="wrap contact-grid">
+      <div class="cinfo reveal in">
+        <a class="cline" href="mailto:sport@ensem.ac.ma"><span class="ic">@</span><span><b>Email</b>sport@ensem.ac.ma</span></a>
+        <div class="cline"><span class="ic">⌂</span><span><b>Adresse</b>ENSEM — École Nationale Supérieure d'Électricité et de Mécanique, Université Hassan II de Casablanca, Casablanca, Maroc</span></div>
+        <a class="cline" href="https://www.instagram.com/ensemsport/" target="_blank" rel="noopener"><span class="ic">◎</span><span><b>Instagram</b>@ensemsport</span></a>
+        <a class="cline" href="https://www.tiktok.com/@ensem.sport" target="_blank" rel="noopener"><span class="ic">♪</span><span><b>TikTok</b>@ensem.sport</span></a>
+        <a class="cline" href="https://youtube.com/@ensemsport?si=j1kpcuPxg43kUqoc" target="_blank" rel="noopener"><span class="ic">▶</span><span><b>YouTube</b>@ensemsport</span></a>
+      </div>
+      <form class="reveal in" id="contactForm" novalidate>
+        <div class="field"><label for="cn">Nom complet</label><input type="text" id="cn" required><div class="err">Ce champ est obligatoire.</div></div>
+        <div class="field"><label for="ce">Adresse e-mail</label><input type="email" id="ce" required><div class="err">Saisissez une adresse e-mail valide.</div></div>
+        <div class="field"><label for="co">Objet</label>
+          <select id="co"><option>inscription</option><option>Événement</option><option>Médias / Podcast</option><option>Partenariat</option><option>Autre</option></select>
+        </div>
+        <div class="field"><label for="cm">Votre message</label><textarea id="cm" required></textarea><div class="err">Ce champ est obligatoire.</div></div>
+        <button type="submit" class="btn primary full">Envoyer la demande</button>
+        <div class="form-msg" id="contactMsg"></div>
+      </form>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=6"></script>
+<script src="experience.js?v=1"></script>
+<script>
+  document.addEventListener('DOMContentLoaded',()=>{
+    observeReveal();
+    document.getElementById('contactForm').addEventListener('submit', async e=>{
+      e.preventDefault();
+      const n=document.getElementById('cn'),em=document.getElementById('ce'),obj=document.getElementById('co'),m=document.getElementById('cm'),msg=document.getElementById('contactMsg');
+      const btn=e.target.querySelector('button[type="submit"]');
+      let ok=markField(n,n.value.trim()!=='');ok=markField(em,isEmail(em.value.trim()))&&ok;ok=markField(m,m.value.trim()!=='')&&ok;
+      if(!ok)return;
+      const payload={type:'contact',nom:n.value.trim(),email:em.value.trim(),objet:obj.value,message:m.value.trim()};
+      btn.disabled=true;btn.textContent='Envoi…';
+      try{
+        await sendToSheet(payload);
+        msg.className='form-msg ok show';
+        msg.textContent='Message enregistré et transmis à ENSEM Sport. Le comité vous répondra depuis sport@ensem.ac.ma.';
+        showToast('<b>✓</b> Message envoyé.'); e.target.reset();
+      }catch(err){
+        msg.className='form-msg show'; msg.textContent="L'envoi a échoué. Écrivez directement à sport@ensem.ac.ma.";
+      }finally{btn.disabled=false;btn.textContent='Envoyer la demande';}
+    });
+    // pré-remplissage de l'objet si on arrive depuis un lien ?objet=Partenariat
+    const p=new URLSearchParams(location.search).get('objet');
+    if(p){[...document.getElementById('co').options].forEach(o=>{if(o.text===p)document.getElementById('co').value=p;});}
+  });
+</script>
+</body>
+</html>

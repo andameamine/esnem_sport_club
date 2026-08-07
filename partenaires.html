@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="logo.png" type="image/png">
+<title>Partenaires — ENSEM SPORT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css?v=6">
+<link rel="stylesheet" href="experience.css?v=8">
+</head>
+<body class="page-partners">
+<div id="site-header"></div>
+<main>
+  <section class="pagehead">
+    <div class="wrap">
+      <span class="eyebrow">Partenaires</span>
+      <h1>Des partenariats qui prennent forme</h1>
+      <p>Trois formats concrets pour intégrer votre marque à l'expérience ENSEM Sport, sur le terrain comme en ligne.</p>
+    </div>
+    <img class="logo-wm" src="assets/logo.png" alt="">
+  </section>
+
+  <section class="sponsor-formats" aria-labelledby="formats-title">
+    <div class="wrap">
+      <div class="sponsor-intro">
+        <div>
+          <span class="eyebrow">Formats de visibilité</span>
+          <h2 id="formats-title">Votre marque,<br>dans l'expérience.</h2>
+        </div>
+        <p>Choisissez un format pour découvrir comment votre identité peut vivre auprès des participants, du public et de la communauté ENSEM Sport.</p>
+      </div>
+
+      <div class="sponsor-showcase" id="sponsorShowcase">
+        <div class="sponsor-rail" role="tablist" aria-label="Formats de partenariat">
+          <button class="sponsor-format-card is-active" type="button" role="tab" aria-selected="true" aria-controls="sponsor-panel-products" id="sponsor-tab-products" data-sponsor-format="products">
+            <span class="format-index">01</span>
+            <img src="sponsor-products.png?v=2" alt="Maillot et gourde ENSEM Sport avec emplacement pour le logo du sponsor">
+            <span class="format-name">Produits</span>
+          </button>
+          <button class="sponsor-format-card" type="button" role="tab" aria-selected="false" aria-controls="sponsor-panel-badges" id="sponsor-tab-badges" data-sponsor-format="badges" tabindex="-1">
+            <span class="format-index">02</span>
+            <img src="sponsor-badges.png?v=2" alt="Badge participant ENSEM Sport présentant plusieurs emplacements sponsors">
+            <span class="format-name">Badges</span>
+          </button>
+          <button class="sponsor-format-card" type="button" role="tab" aria-selected="false" aria-controls="sponsor-panel-social" id="sponsor-tab-social" data-sponsor-format="social" tabindex="-1">
+            <span class="format-index">03</span>
+            <img src="sponsor-social-media.png?v=2" alt="Aperçu des intégrations partenaires sur les réseaux sociaux ENSEM Sport">
+            <span class="format-name">Social Media</span>
+          </button>
+        </div>
+
+        <div class="sponsor-details" aria-live="polite">
+          <div class="sponsor-status"><span id="sponsorCurrent">01</span><span>/ 03</span></div>
+
+          <article class="sponsor-panel is-active" role="tabpanel" id="sponsor-panel-products" aria-labelledby="sponsor-tab-products" data-sponsor-panel="products">
+            <span class="eyebrow">Présence physique</span>
+            <h3>Produits co-signés</h3>
+            <p>Intégrez votre logo aux supports utilisés pendant les événements : tenues, gourdes et objets distribués aux participants.</p>
+            <ul>
+              <li>Visibilité pendant l'événement</li>
+              <li>Présence sur les photos officielles</li>
+              <li>Support utile et durable</li>
+            </ul>
+          </article>
+
+          <article class="sponsor-panel" role="tabpanel" id="sponsor-panel-badges" aria-labelledby="sponsor-tab-badges" data-sponsor-panel="badges" hidden>
+            <span class="eyebrow">Identification événementielle</span>
+            <h3>Badges participants</h3>
+            <p>Positionnez votre marque sur un support porté par les participants et visible pendant toute la durée de l'événement.</p>
+            <ul>
+              <li>Logo intégré à la composition</li>
+              <li>Contact direct avec les participants</li>
+              <li>Format adapté à chaque événement</li>
+            </ul>
+          </article>
+
+          <article class="sponsor-panel" role="tabpanel" id="sponsor-panel-social" aria-labelledby="sponsor-tab-social" data-sponsor-panel="social" hidden>
+            <span class="eyebrow">Visibilité numérique</span>
+            <h3>Réseaux sociaux</h3>
+            <p>Déployez votre présence dans les publications, stories et contenus partenaires diffusés par ENSEM Sport.</p>
+            <ul>
+              <li>Contenus co-signés</li>
+              <li>Mises en avant partenaires</li>
+              <li>Formats adaptés aux réseaux sociaux</li>
+            </ul>
+          </article>
+
+          <a href="contact.html?objet=Partenariat" class="btn primary sponsor-contact">Discuter d'un partenariat <span class="arrow">→</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="published-partners" aria-labelledby="published-partners-title">
+    <div class="wrap">
+      <div class="sponsor-intro compact">
+        <div>
+          <span class="eyebrow">Réseau</span>
+          <h2 id="published-partners-title">Nos partenaires</h2>
+        </div>
+        <p>Les organisations partenaires publiées par l'équipe ENSEM Sport apparaissent ici.</p>
+      </div>
+      <div class="plogos reveal in" id="partnersGrid"></div>
+      <div class="cta-band reveal in">
+        <div>
+          <span class="eyebrow">Votre organisation</span>
+          <h3>Construisons un format adapté à vos objectifs.</h3>
+        </div>
+        <a href="contact.html?objet=Partenariat" class="btn primary">Devenir partenaire <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+<div id="site-footer"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="app.js?v=7"></script>
+<script src="experience.js?v=4"></script>
+<script src="partners-experience.js?v=1"></script>
+<script>document.addEventListener('DOMContentLoaded',async()=>{await loadPartnersInto('partnersGrid');observeReveal();});</script>
+</body>
+</html>
