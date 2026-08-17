@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENSEM SPORT — Reel Premium</title>
+<meta name="description" content="Bande-annonce verticale officielle d'ENSEM Sport : école, vision, événements et partenaires — format Instagram Reel.">
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0c; --flame:#D6202A; --flame-deep:#9E1620; --flame-hot:#ff5a3c;
+    --paper:#EEF0F3; --line:#26272b; --ease:cubic-bezier(.22,.61,.36,1);
+    --stage-w:min(430px,94vw); --stage-h:min(92vh,860px);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;height:100%}
+  body{
+    background:#050506;color:#fff;font-family:'Inter',system-ui,sans-serif;
+    min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:1.1rem;padding:1.6rem 1rem;overflow-x:hidden;
+    background-image:radial-gradient(70% 55% at 50% 12%,#161618 0%,#050506 72%);
+  }
+
+  /* ---------- outer page chrome (not part of the reel) ---------- */
+  .kicker{text-align:center;max-width:var(--stage-w)}
+  .kicker .eyebrow{font-weight:800;font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:var(--flame)}
+  .kicker h1{font-family:'Anton';font-weight:400;text-transform:uppercase;letter-spacing:.6px;font-size:clamp(1.2rem,4.4vw,1.7rem);margin:.45rem 0 .3rem}
+  .kicker p{color:#9aa0aa;font-size:.82rem;line-height:1.55;margin:0}
+
+  /* ---------- the reel stage (9:16 cinematic frame) ---------- */
+  .reel{
+    position:relative;width:var(--stage-w);height:var(--stage-h);aspect-ratio:9/16;
+    border-radius:26px;overflow:hidden;background:#000;cursor:pointer;isolation:isolate;
+    box-shadow:0 50px 110px -40px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.06),0 0 0 8px rgba(255,255,255,.02);
+    user-select:none;
+  }
+
+  /* film grain + vignette overlays (always on top of scenes, below UI) */
+  .grain{position:absolute;inset:0;z-index:30;pointer-events:none;opacity:.06;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grainShift 1.1s steps(3) infinite}
+  .vignette{position:absolute;inset:0;z-index:29;pointer-events:none;box-shadow:inset 0 0 160px 30px rgba(0,0,0,.85)}
+  .letterbox{position:absolute;left:0;right:0;height:0;background:#000;z-index:28;pointer-events:none;transition:height .8s var(--ease)}
+  .letterbox.top{top:0} .letterbox.bottom{bottom:0}
+  .reel.cinema .letterbox{height:5.5%}
+
+  /* ---------- scenes ---------- */
+  .stage{position:absolute;inset:0;z-index:5}
+  .scene{position:absolute;inset:0;opacity:0;transition:opacity .7s var(--ease);pointer-events:none}
+  .scene.active{opacity:1}
+
+  /* full-bleed Ken Burns photo */
+  .kb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.16);will-change:transform}
+  .scene.active .kb{animation:kenburns 6.5s ease-out both}
+  .scene.active .kb.kb-alt{animation:kenburnsAlt 6.5s ease-out both}
+  .shade{position:absolute;inset:0}
+  .shade.b{background:linear-gradient(0deg,rgba(4,4,6,.94) 4%,rgba(4,4,6,.35) 42%,rgba(4,4,6,.55) 100%)}
+  .shade.flame{background:linear-gradient(160deg,rgba(158,22,32,.55),rgba(4,4,6,.2) 45%,rgba(4,4,6,.92))}
+
+  /* content block, bottom-anchored like a reel */
+  .copy{position:absolute;left:0;right:0;bottom:0;z-index:10;padding:0 8% 15%;}
+  .copy.center{top:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 9%}
+
+  .eyebrow-tag{display:inline-flex;align-items:center;gap:.55rem;font-weight:800;font-size:.6rem;letter-spacing:.26em;text-transform:uppercase;color:var(--flame)}
+  .eyebrow-tag::before{content:"";width:22px;height:2px;background:var(--flame)}
+  .copy.center .eyebrow-tag{justify-content:center}
+
+  /* kinetic line-masked headline */
+  .headline{font-family:'Anton';font-weight:400;text-transform:uppercase;line-height:.94;letter-spacing:.5px;margin:.7rem 0 0}
+  .headline .ln{display:block;overflow:hidden}
+  .headline .ln > span{display:block;transform:translateY(112%);transition:transform .8s var(--ease)}
+  .scene.active .headline .ln > span{transform:translateY(0)}
+  .scene.active .headline .ln:nth-child(2) > span{transition-delay:.09s}
+  .scene.active .headline .ln:nth-child(3) > span{transition-delay:.18s}
+
+  .lede{color:#d4d7dc;font-size:.9rem;line-height:1.55;margin-top:.75rem;max-width:34ch;
+    opacity:0;transform:translateY(16px);transition:opacity .7s var(--ease) .35s,transform .7s var(--ease) .35s}
+  .copy.center .lede{margin-left:auto;margin-right:auto}
+  .scene.active .lede{opacity:1;transform:none}
+
+  .signoff{display:flex;align-items:center;gap:.6rem;margin-top:1rem;opacity:0;transform:translateY(14px);
+    transition:opacity .7s var(--ease) .55s,transform .7s var(--ease) .55s}
+  .scene.active .signoff{opacity:1;transform:none}
+  .signoff .bar{width:34px;height:3px;background:var(--flame);border-radius:2px}
+  .signoff b{font-family:'Anton';font-weight:400;letter-spacing:.5px;font-size:.95rem}
+  .signoff span{display:block;font-size:.66rem;color:#9aa0aa;font-weight:600;letter-spacing:.04em}
+
+  /* ---------- intro scene ---------- */
+  #s-intro{background:radial-gradient(120% 80% at 50% 30%,#1a1a1d,#050506 70%)}
+  .intro-wrap{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:0 8%}
+  .intro-logo{width:96px;height:96px;object-fit:contain;position:relative;margin-bottom:1rem;
+    opacity:0;transform:scale(.6) rotate(-12deg);transition:opacity .9s var(--ease),transform 1s var(--ease)}
+  .scene.active .intro-logo{opacity:1;transform:none}
+  .intro-logo .glow{position:absolute;inset:-45%;background:radial-gradient(circle,rgba(214,32,42,.6),transparent 68%);z-index:-1;animation:pulseGlow 3s ease-in-out infinite}
+  .intro-eyebrow{font-weight:800;font-size:.58rem;letter-spacing:.24em;text-transform:uppercase;color:var(--flame);
+    opacity:0;transition:opacity .8s ease .15s}
+  .scene.active .intro-eyebrow{opacity:1}
+  .intro-title{font-family:'Anton';font-weight:400;text-transform:uppercase;line-height:.9;letter-spacing:1px;
+    font-size:clamp(2.6rem,15vw,4.2rem);margin:.5rem 0}
+  .intro-title .ln{display:block;overflow:hidden}
+  .intro-title .ln>span{display:block;transform:translateY(115%);transition:transform .9s var(--ease) .2s}
+  .scene.active .intro-title .ln:nth-child(2)>span{transition-delay:.32s}
+  .scene.active .intro-title .ln>span{transform:translateY(0)}
+  .intro-tag{font-size:1rem;color:#cfd2d7;font-style:italic;opacity:0;transform:translateY(12px);
+    transition:opacity .8s ease .6s,transform .8s var(--ease) .6s}
+  .scene.active .intro-tag{opacity:1;transform:none}
+
+  /* match tapes (from the real site hero) */
+  .tapes{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:1;opacity:.9}
+  .tape{position:absolute;left:-10%;width:130%;white-space:nowrap;font-family:'Anton';letter-spacing:3px;
+    font-size:1.5rem;text-transform:uppercase}
+  .tape.a{top:16%;transform:rotate(-6deg);color:rgba(255,255,255,.05)}
+  .tape.b{bottom:16%;transform:rotate(-6deg);color:var(--flame);opacity:.14}
+  .tape span{display:inline-block;padding-right:2rem;animation:tapeScroll 14s linear infinite}
+  .tape.b span{animation-direction:reverse;animation-duration:18s}
+
+  /* ---------- manifesto scene ---------- */
+  #s-manifesto{background:radial-gradient(120% 90% at 50% 0%,#161618,#050506 62%)}
+  .outline-word{font-family:'Anton';text-transform:uppercase;line-height:.9;font-size:clamp(2.4rem,12vw,3.6rem);
+    -webkit-text-stroke:1.5px rgba(255,255,255,.32);color:transparent;letter-spacing:1px}
+  .outline-word em{font-style:normal;-webkit-text-stroke:0;color:var(--flame)}
+
+  /* ---------- events montage overlays ---------- */
+  /* show the director photo in full (no cropping / no over-zoom) */
+  #s-directeur .kb{object-fit:contain;background:radial-gradient(120% 90% at 50% 30%,#1a1a1d,#050506 70%);
+    transform:none !important;animation:none !important}
+  /* show the event logos/photos in full (no cropping / no over-zoom) */
+  .scene.ev .kb{object-fit:contain;background:radial-gradient(120% 90% at 50% 30%,#1a1a1d,#050506 70%);
+    transform:none !important;animation:none !important}
+  .ev-index{position:absolute;top:9%;left:8%;z-index:10;font-family:'Anton';font-size:.9rem;letter-spacing:2px;color:rgba(255,255,255,.6)}
+  .ev-cat{display:inline-block;font-size:.6rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+    color:#fff;background:var(--flame);padding:.3rem .7rem;border-radius:5px}
+  .ev-name{font-family:'Anton';font-weight:400;text-transform:uppercase;line-height:.95;font-size:clamp(1.8rem,9vw,2.6rem);margin-top:.6rem}
+
+  /* ---------- partners scene ---------- */
+  .sponsor-frame{position:absolute;inset:12% 10% 34%;z-index:8;border-radius:16px;overflow:hidden;
+    border:1px solid rgba(255,255,255,.12);box-shadow:0 30px 60px -25px rgba(0,0,0,.8)}
+  .sponsor-frame img{width:100%;height:100%;object-fit:cover;transform:scale(1.08)}
+  .scene.active .sponsor-frame img{animation:kenburns 6s ease-out both}
+
+  /* ---------- end / CTA scene ---------- */
+  #s-end{background:linear-gradient(160deg,var(--flame-deep) 0%,#210606 52%,#050506 100%)}
+  .end-logo{width:74px;height:74px;object-fit:contain;margin:0 auto 1rem;display:block;
+    opacity:0;transform:scale(.7);transition:opacity .8s ease,transform .8s var(--ease)}
+  .scene.active .end-logo{opacity:1;transform:none}
+  .end-cta{display:inline-flex;align-items:center;gap:.5rem;background:#fff;color:#111;font-weight:800;
+    font-size:.85rem;padding:.85rem 1.6rem;border-radius:999px;text-decoration:none;margin-top:1.1rem;
+    opacity:0;transform:translateY(14px);transition:opacity .7s ease .7s,transform .7s var(--ease) .7s,box-shadow .2s}
+  .scene.active .end-cta{opacity:1;transform:none}
+  .end-cta:hover{box-shadow:0 14px 30px -12px rgba(255,255,255,.5)}
+  .end-handle{margin-top:1.1rem;font-size:.68rem;color:#f2c9c9;letter-spacing:.06em;
+    opacity:0;transition:opacity .7s ease .9s}
+  .scene.active .end-handle{opacity:1}
+
+  /* ---------- transition wipe ---------- */
+  .wipe{position:absolute;inset:-6% -34%;z-index:26;pointer-events:none;
+    background:linear-gradient(115deg,var(--flame-deep),var(--flame) 55%,var(--flame-hot));
+    transform:translateX(-140%) skewX(-9deg);transition:transform .55s var(--ease)}
+  .wipe.cover{transform:translateX(0) skewX(-9deg)}
+  .wipe.exit{transform:translateX(140%) skewX(-9deg)}
+
+  /* ---------- reel UI (Instagram-like) ---------- */
+  .progress{position:absolute;top:0;left:0;right:0;z-index:40;height:3px;background:rgba(255,255,255,.22)}
+  .progress .bar{height:100%;width:0;background:#fff;border-radius:0 3px 3px 0}
+  .topbar{position:absolute;top:14px;left:14px;right:14px;z-index:40;display:flex;align-items:center;gap:.5rem;
+    font-size:.72rem;font-weight:700;text-shadow:0 1px 4px rgba(0,0,0,.6)}
+  .topbar .live{font-size:.55rem;font-weight:800;letter-spacing:.1em;background:var(--flame);padding:.15rem .45rem;border-radius:4px;margin-left:auto}
+  .topbar .chapter{font-size:.6rem;color:#cfd2d7;font-weight:600;letter-spacing:.05em}
+
+  .rail{position:absolute;right:10px;bottom:96px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:.95rem;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  .rail .item{display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.58rem;font-weight:700}
+  .rail .ic{font-size:1.45rem;line-height:1}
+  .rail .disc{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#333,#000);
+    display:flex;align-items:center;justify-content:center;font-size:.85rem;border:2px solid #55575d;
+    animation:discSpin 3.6s linear infinite;margin-top:.15rem}
+  .caption{position:absolute;left:14px;right:70px;bottom:20px;z-index:40;text-shadow:0 1px 6px rgba(0,0,0,.6)}
+  .cap-user{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
+  .cap-avatar{width:26px;height:26px;border-radius:50%;object-fit:cover;border:1.5px solid #fff}
+  .cap-name{font-weight:800;font-size:.78rem}
+  .cap-follow{font-size:.58rem;font-weight:700;border:1px solid #fff;border-radius:6px;padding:.12rem .5rem;margin-left:.35rem}
+  .cap-music{display:flex;align-items:center;gap:.35rem;font-size:.62rem;margin-top:.4rem;opacity:.92;white-space:nowrap;overflow:hidden}
+
+  .pause-badge{position:absolute;inset:0;z-index:45;display:flex;align-items:center;justify-content:center;
+    opacity:0;transition:opacity .25s;pointer-events:none}
+  .pause-badge span{font-size:3rem;color:rgba(255,255,255,.9);text-shadow:0 2px 12px rgba(0,0,0,.6)}
+  .reel.paused .pause-badge{opacity:1}
+
+  /* ---------- controls under the reel ---------- */
+  .controls{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+  .controls button,.controls a{font-family:'Inter';font-weight:700;font-size:.82rem;cursor:pointer;border-radius:999px;
+    padding:.6rem 1.2rem;border:2px solid #fff;background:#fff;color:#111;text-decoration:none;
+    display:inline-flex;align-items:center;gap:.4rem;transition:transform .2s var(--ease),background .2s,color .2s}
+  .controls button:hover,.controls a:hover{transform:translateY(-2px)}
+  .controls a.ghost,.controls button.ghost{background:transparent;color:#fff;border-color:#3f4249}
+  .controls a.ghost:hover,.controls button.ghost:hover{border-color:var(--flame);color:var(--flame)}
+  .hint{max-width:var(--stage-w);text-align:center;color:#71757d;font-size:.72rem;line-height:1.55}
+  .hint b{color:#c1c4ca}
+
+  @keyframes kenburns{from{transform:scale(1.18) translate(2%,2%)}to{transform:scale(1) translate(0,0)}}
+  @keyframes kenburnsAlt{from{transform:scale(1.02) translate(-2%,0)}to{transform:scale(1.2) translate(2%,-2%)}}
+  @keyframes pulseGlow{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.14)}}
+  @keyframes discSpin{to{transform:rotate(360deg)}}
+  @keyframes tapeScroll{to{transform:translateX(-33%)}}
+  @keyframes grainShift{0%{transform:translate(0,0)}33%{transform:translate(-4%,3%)}66%{transform:translate(3%,-4%)}100%{transform:translate(0,0)}}
+
+  @media (prefers-reduced-motion: reduce){
+    .kb,.tape span,.disc,.grain,.intro-logo .glow{animation:none !important}
+    .scene,.headline .ln>span,.lede,.signoff,.wipe{transition-duration:.01ms !important}
+  }
+</style>
+</head>
+<body>
+
+  <div class="kicker">
+    <span class="eyebrow"><h1>ENSEM Sport </h1></span>
+    <h1>Ensemble, plus loin.</h1>
+  </div>
+
+  <div class="reel cinema" id="reel">
+    <div class="letterbox top"></div>
+    <div class="letterbox bottom"></div>
+
+    <div class="stage" id="stageScenes">
+
+      <!-- 1 · INTRO -->
+      <section class="scene" id="s-intro">
+        <div class="tapes" aria-hidden="true">
+          <div class="tape a"><span>ENSEM SPORT · ENSEMBLE, PLUS LOIN · DÉPASSEMENT · ENGAGEMENT · ÉQUIPE · ENSEM SPORT · ENSEMBLE, PLUS LOIN · </span></div>
+          <div class="tape b"><span>CASABLANCA · COMPÉTITION · LEADERSHIP · ÉNERGIE COLLECTIVE · CASABLANCA · COMPÉTITION · LEADERSHIP · </span></div>
+        </div>
+        <div class="intro-wrap">
+          <div class="intro-logo"><span class="glow"></span><img src="logo-invert.png" alt="" style="width:100%;height:100%;object-fit:contain"></div>
+          <span class="intro-eyebrow">Organisation sportive étudiante officielle</span>
+          <h2 class="intro-title"><span class="ln"><span>ENSEM</span></span><span class="ln"><span>SPORT</span></span></h2>
+          <p class="intro-tag">Ensemble, plus loin.</p>
+        </div>
+      </section>
+
+      <!-- 2 · MANIFESTO -->
+      <section class="scene" id="s-manifesto">
+        <div class="copy center">
+          <span class="eyebrow-tag">Notre signature</span>
+          <div class="outline-word" style="margin-top:.8rem">Ensemble,<br><em>plus loin.</em></div>
+          <p class="lede">ENSEM Sport rassemble les étudiants autour de la compétition, de la créativité et du dépassement de soi. Chaque événement devient un terrain d'apprentissage, de rencontre et de fierté collective.</p>
+        </div>
+      </section>
+
+      <!-- 3 · ÉCOLE -->
+      <section class="scene" id="s-ecole">
+        <img class="kb" src="ecole-photo.jpg" alt="">
+        <div class="shade b"></div>
+        <div class="copy">
+          <span class="eyebrow-tag">Notre école</span>
+          <h2 class="headline" style="font-size:clamp(1.7rem,8vw,2.4rem)">
+            <span class="ln"><span>Une école</span></span>
+            <span class="ln"><span>d'excellence en</span></span>
+            <span class="ln"><span>ingénierie</span></span>
+          </h2>
+          <p class="lede">L'École Nationale Supérieure d'Électricité et de Mécanique, Université Hassan II de Casablanca — une institution de référence de l'enseignement supérieur en ingénierie au Maroc.</p>
+        </div>
+      </section>
+
+      <!-- 4 · DIRECTEUR -->
+      <section class="scene" id="s-directeur">
+        <img class="kb kb-alt" src="directeur.png" alt="">
+        <div class="shade flame"></div>
+        <div class="copy">
+          <span class="eyebrow-tag">La vision du directeur</span>
+          <h2 class="headline" style="font-size:clamp(1.6rem,7.5vw,2.2rem)">
+            <span class="ln"><span>Une ambition</span></span>
+            <span class="ln"><span>parmi les meilleures</span></span>
+          </h2>
+          <p class="lede">Excellence académique, innovation, recherche et une place essentielle donnée à la vie estudiantine et au parascolaire.</p>
+          <div class="signoff"><span class="bar"></span><div><b>Pr. Ahmed Naddami</b><span>Directeur de l'ENSEM</span></div></div>
+        </div>
+      </section>
+
+      <!-- 5 · EVENTS TITLE -->
+      <section class="scene" id="s-events-title">
+        <div class="copy center">
+          <span class="eyebrow-tag">Temps forts</span>
+          <h2 class="headline" style="font-size:clamp(2rem,11vw,3.2rem)">
+            <span class="ln"><span>Nos terrains</span></span>
+            <span class="ln"><span>d'expression</span></span>
+          </h2>
+          <p class="lede">Des rendez-vous conçus par les étudiants, pour les étudiants : sport, culture, média, gaming et vie de campus.</p>
+        </div>
+      </section>
+
+      <!-- 6..10 · EVENTS MONTAGE (real images) -->
+      <section class="scene ev" id="ev-1">
+        <img class="kb" src="assets/ev-joe.png" alt="">
+        <div class="shade b"></div>
+        <span class="ev-index">01 · Événement phare</span>
+        <div class="copy"><span class="ev-cat">Compétition</span><h2 class="ev-name">JOE — Olympiades</h2></div>
+      </section>
+      <section class="scene ev" id="ev-2">
+        <img class="kb kb-alt" src="assets/ev-tournois.png" alt="">
+        <div class="shade b"></div>
+        <span class="ev-index">02</span>
+        <div class="copy"><span class="ev-cat">Sport</span><h2 class="ev-name">Tournois sportifs</h2></div>
+      </section>
+      <section class="scene ev" id="ev-3">
+        <img class="kb" src="assets/ev-gaming.png" alt="">
+        <div class="shade b"></div>
+        <span class="ev-index">03</span>
+        <div class="copy"><span class="ev-cat">Gaming</span><h2 class="ev-name">ENSEM Gaming Expo</h2></div>
+      </section>
+      <section class="scene ev" id="ev-4">
+        <img class="kb kb-alt" src="assets/ev-podcast.png" alt="">
+        <div class="shade b"></div>
+        <span class="ev-index">04 · Média</span>
+        <div class="copy"><span class="ev-cat">Média</span><h2 class="ev-name">ES Podcast</h2></div>
+      </section>
+      <section class="scene ev" id="ev-5">
+        <img class="kb" src="assets/ev-integration.png" alt="">
+        <div class="shade b"></div>
+        <span class="ev-index">05 · Vie de club</span>
+        <div class="copy"><span class="ev-cat">Vie de club</span><h2 class="ev-name">Semaine d'intégration</h2></div>
+      </section>
+
+      <!-- 11 · PARTENAIRES -->
+      <section class="scene" id="s-partners">
+        <div class="shade flame" style="opacity:.9"></div>
+        <div class="sponsor-frame"><img src="sponsor-products.png?v=2" alt=""></div>
+        <div class="copy">
+          <span class="eyebrow-tag">Partenaires</span>
+          <h2 class="headline" style="font-size:clamp(1.7rem,8.5vw,2.5rem)">
+            <span class="ln"><span>Votre marque,</span></span>
+            <span class="ln"><span>dans l'expérience.</span></span>
+          </h2>
+          <p class="lede">Produits co-signés, badges participants et réseaux sociaux : trois formats concrets pour vivre l'expérience ENSEM Sport.</p>
+        </div>
+      </section>
+
+      <!-- 12 · END / CTA -->
+      <section class="scene" id="s-end">
+        <div class="copy center">
+          <img class="end-logo" src="logo-invert.png" alt="">
+          <span class="eyebrow-tag">Votre énergie compte</span>
+          <h2 class="headline" style="font-size:clamp(2rem,10vw,3rem);margin-top:.6rem">
+            <span class="ln"><span>Entrez dans</span></span>
+            <span class="ln"><span>le mouvement.</span></span>
+          </h2>
+          <a class="end-cta" href="index.html">Découvrir le site <span>→</span></a>
+          <span class="end-handle">@ensemsport · ENSEM · Université Hassan II de Casablanca</span>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- transition + film overlays -->
+    <div class="wipe" id="wipe" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+
+    <!-- reel UI -->
+    <div class="progress"><div class="bar" id="progressBar"></div></div>
+    <div class="topbar">
+      <img class="cap-avatar" style="width:22px;height:22px" src="logo.png" alt="">
+      <span>ensemsport</span>
+      <span class="chapter" id="chapterLabel">Intro</span>
+    </div>
+
+    <div class="pause-badge" aria-hidden="true"><span>⏸</span></div>
+  </div>
+
+  <div class="controls">
+    <button id="restartBtn" type="button">⟳ Rejouer</button>
+    <button class="ghost" id="pauseBtn" type="button">⏸ Pause</button>
+    <a class="ghost" href="index.html">← Retour au site</a>
+  </div>
+  <p class="hint"><b>Export vidéo :</b> lancez un enregistrement d'écran (QuickTime / OBS) cadré sur le reel, cliquez « Rejouer », puis exportez le clip en .mp4 pour Instagram Reels ou Stories.</p>
+
+<script>
+(function(){
+  var reel = document.getElementById('reel');
+  var bar = document.getElementById('progressBar');
+  var wipe = document.getElementById('wipe');
+  var chapterLabel = document.getElementById('chapterLabel');
+
+  // Timeline: id, chapter label, duration (ms), wipe transition into this scene?
+  var scenes = [
+    {id:'s-intro',        label:'Intro',        dur:3600, wipe:false},
+    {id:'s-manifesto',    label:'Signature',    dur:3800, wipe:true },
+    {id:'s-ecole',        label:'Notre école',  dur:4200, wipe:true },
+    {id:'s-directeur',    label:'Le directeur', dur:4200, wipe:true },
+    {id:'s-events-title', label:'Temps forts',  dur:3200, wipe:true },
+    {id:'ev-1',           label:'JOE',          dur:2400, wipe:false},
+    {id:'ev-2',           label:'Tournois',     dur:2200, wipe:false},
+    {id:'ev-3',           label:'Gaming Expo',  dur:2200, wipe:false},
+    {id:'ev-4',           label:'ES Podcast',   dur:2200, wipe:false},
+    {id:'ev-5',           label:'Intégration',  dur:2200, wipe:false},
+    {id:'s-partners',     label:'Partenaires',  dur:4000, wipe:true },
+    {id:'s-end',          label:'Rejoindre',    dur:4600, wipe:true }
+  ];
+  var total = scenes.reduce(function(s,x){return s+x.dur;},0);
+  var els = scenes.map(function(s){return document.getElementById(s.id);});
+
+  var idx = 0, sceneStart = 0, elapsedBefore = 0, rafId = null, paused = false;
+
+  function clearActive(){ els.forEach(function(e){e.classList.remove('active');}); }
+
+  function doWipe(){
+    wipe.classList.remove('exit');
+    wipe.classList.add('cover');
+    setTimeout(function(){ wipe.classList.remove('cover'); wipe.classList.add('exit'); }, 300);
+    setTimeout(function(){ wipe.classList.remove('exit'); }, 900);
+  }
+
+  function activate(i){
+    idx = i;
+    clearActive();
+    // restart Ken Burns / masks by forcing reflow on the target scene
+    var el = els[i];
+    void el.offsetWidth;
+    el.classList.add('active');
+    chapterLabel.textContent = scenes[i].label;
+    if (scenes[i].wipe) doWipe();
+  }
+
+  function tick(now){
+    if (paused) return;
+    var sceneElapsed = now - sceneStart;
+    var s = scenes[idx];
+    // progress across whole reel
+    var globalElapsed = elapsedBefore + Math.min(sceneElapsed, s.dur);
+    bar.style.width = (globalElapsed / total * 100) + '%';
+
+    if (sceneElapsed >= s.dur){
+      elapsedBefore += s.dur;
+      var next = idx + 1;
+      if (next >= scenes.length){ restart(); return; }
+      sceneStart = now;
+      activate(next);
+    }
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function start(){
+    cancelAnimationFrame(rafId);
+    paused = false; reel.classList.remove('paused');
+    document.getElementById('pauseBtn').innerHTML = '⏸ Pause';
+    elapsedBefore = 0;
+    activate(0);
+    sceneStart = performance.now();
+    rafId = requestAnimationFrame(tick);
+  }
+  function restart(){ start(); }
+
+  function togglePause(){
+    if (paused){
+      paused = false; reel.classList.remove('paused');
+      document.getElementById('pauseBtn').innerHTML = '⏸ Pause';
+      // resume: shift sceneStart so elapsed continues
+      sceneStart = performance.now() - pausedSceneElapsed;
+      rafId = requestAnimationFrame(tick);
+    } else {
+      paused = true; reel.classList.add('paused');
+      document.getElementById('pauseBtn').innerHTML = '▶ Lecture';
+      pausedSceneElapsed = performance.now() - sceneStart;
+      cancelAnimationFrame(rafId);
+    }
+  }
+  var pausedSceneElapsed = 0;
+
+  reel.addEventListener('click', function(e){ togglePause(); });
+  document.getElementById('pauseBtn').addEventListener('click', function(e){ e.stopPropagation(); togglePause(); });
+  document.getElementById('restartBtn').addEventListener('click', function(e){ e.stopPropagation(); start(); });
+
+  start();
+})();
+</script>
+</body>
+</html>
